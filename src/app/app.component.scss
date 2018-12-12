@@ -1,0 +1,18 @@
+.container{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    .mat-drawer{
+        min-width:200px;
+        .mat-button{
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
+    }
+}
+.spacer{
+    flex: 1 1 auto;
+}
