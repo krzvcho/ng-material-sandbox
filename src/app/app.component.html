@@ -1,26 +1,38 @@
 <mat-drawer-container class="container" autosize>
-
-  <mat-drawer #drawer class="sidenav" mode="sidenav">  
-    <button color="primary" mat-button routerLink="/weather">Weather</button>
-    <button color="primary" mat-button routerLink="/alive">Alive</button>
+  <mat-drawer #drawer class="sidenav" mode="sidenav">
+    <button
+      color="primary"
+      (click)="drawer.close()"
+      mat-button
+      routerLink="/weather"
+    >
+      Weather
+    </button>
+    <button
+      color="primary"
+      (click)="drawer.close()"
+      mat-button
+      routerLink="/alive"
+    >
+      Alive
+    </button>
   </mat-drawer>
-  
-  <div class="sidenav-content" >
+
+  <div class="sidenav-content">
     <mat-toolbar color="primary">
       <mat-toolbar-row>
-        
         <button mat-icon-button (click)="drawer.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-        
+
         <span>nG PlayGround</span>
-        
+
         <span class="spacer"></span>
-        
+
         <mat-icon>motorcycle</mat-icon>
-        
+
         <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>more_vert</mat-icon>
+          <mat-icon>more_vert</mat-icon>
         </button>
 
         <mat-menu #menu="matMenu">
@@ -35,9 +47,7 @@
         </mat-menu>
       </mat-toolbar-row>
     </mat-toolbar>
-    
-    <router-outlet></router-outlet>
-    
-  </div>
 
+    <router-outlet></router-outlet>
+  </div>
 </mat-drawer-container>
