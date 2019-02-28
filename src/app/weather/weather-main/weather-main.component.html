@@ -1,8 +1,21 @@
-<p>
-  Ideas: <br />
-  Where is sunny weather, based on localization, should search nearest towns and
-  check where is sunny weather
+Ideas: <br />
+Where is sunny weather, based on localization, should search nearest towns and
+check where is sunny weather
+<br /><br />
 
+<button (click)="addTown('Kraków')">Add Kraków</button>
+<button (click)="addTown('Warszawa')">Add Warszawa</button>
+<button (click)="addTown('Myślenice')">Add Myślenice</button>
+
+<br /><br />
+<div class="weather-places__container">
+  <ul>
+    <li *ngFor="let place of (weatherPlacesState | async).weatherPlaces">
+      {{ place }}
+    </li>
+  </ul>
+</div>
+
+<div class="weather-data__container">
   {{ weatherData | async | json }}
-  <br />
-</p>
+</div>

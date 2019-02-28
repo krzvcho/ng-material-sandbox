@@ -1,5 +1,14 @@
 <div class="alive-main-container">
-  <app-scene>
-  </app-scene>
+  <app-scene> </app-scene>
+
+  <div class="weather-places__container">
+    <ul>
+      <li
+        style="color:white"
+        *ngFor="let place of (weatherPlacesState | async).weatherPlaces"
+      >
+        {{ place }}
+      </li>
+    </ul>
+  </div>
 </div>
-  
