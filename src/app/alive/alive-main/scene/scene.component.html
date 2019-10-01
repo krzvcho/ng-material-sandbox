@@ -1,4 +1,7 @@
-<div #scene class='app-scene'>
-    <template #sceneContainer></template>
+<div #scene class="app-scene">
+  <template #sceneContainer></template>
 </div>
-<button (click)='addDot()'>Add DOT</button>
+<div class="app-controls">
+  <button (click)="addDot()">Add DOT</button><br />
+  Wall collisions counter: {{ wallColCnt }}
+</div>

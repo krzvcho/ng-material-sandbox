@@ -1,6 +1,12 @@
 import {
-  Component, OnInit, AfterViewInit, ViewChild, ElementRef, HostListener,
-  ViewContainerRef, ComponentFactoryResolver
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  HostListener,
+  ViewContainerRef,
+  ComponentFactoryResolver
 } from '@angular/core';
 
 import { LiveDotComponent } from './live-dot/live-dot.component';
@@ -12,10 +18,12 @@ import { LiveDotComponent } from './live-dot/live-dot.component';
 })
 export class SceneComponent implements OnInit, AfterViewInit {
   @ViewChild('scene') sceneElement: ElementRef;
-  @ViewChild('sceneContainer', { read: ViewContainerRef }) container: ViewContainerRef;
+  @ViewChild('sceneContainer', { read: ViewContainerRef })
+  container: ViewContainerRef;
 
   public sceneBorderPos: Object;
   public cmpList = [];
+  public wallColCnt = 0;
 
   @HostListener('window:resize') onResize() {
     if (this.sceneElement) {
@@ -23,28 +31,26 @@ export class SceneComponent implements OnInit, AfterViewInit {
     }
   }
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver,
-  ) { }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.sceneBorderPos = this.getBorderPositions();
   }
 
   createCmp(pos?) {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(LiveDotComponent);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      LiveDotComponent
+    );
     const cmp = this.container.createComponent(componentFactory);
-    this.cmpList.push(cmp);  
-    cmp.instance.pos = pos; 
+    this.cmpList.push(cmp);
+    cmp.instance.pos = pos;
     cmp.instance.bounds = this.sceneBorderPos;
     cmp.instance.size = { width: '1%', height: '1%' };
-    cmp.instance.wallCollisionEvent.subscribe(pos => {
-      //this.addDot(pos);
-      //cmp.destroy();
-      //console.log(this.cmpList);
+    cmp.instance.wallCollisionEvent.subscribe(() => {
+      this.wallColCnt++;
     });
-
   }
   addDot(pos?) {
     this.createCmp(pos);

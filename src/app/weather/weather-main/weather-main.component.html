@@ -2,20 +2,61 @@ Ideas: <br />
 Where is sunny weather, based on localization, should search nearest towns and
 check where is sunny weather
 <br /><br />
+wez okoliczne miasta i miejscowosci w zadanym promieniu<br />
+stworz punktacje pogodowa...chmury, opady, wiatr, temperatura
 
-<button (click)="addTown('Kraków')">Add Kraków</button>
-<button (click)="addTown('Warszawa')">Add Warszawa</button>
-<button (click)="addTown('Myślenice')">Add Myślenice</button>
+<div class="weather-form-container">
+  <form
+    [formGroup]="locationForm"
+    autocomplete="off"
+    novalidate
+    (ngSubmit)="setLocation(locationForm.value)"
+  >
+    <mat-form-field>
+      <input
+        formControlName="loc"
+        id="loc"
+        matInput
+        placeholder="Podaj nazwę miasta w okół którego szukasz bezchmurnego nieba :)"
+      />
+    </mat-form-field>
+    <mat-card-actions>
+      <button color="primary">OK</button>
+    </mat-card-actions>
+  </form>
+</div>
 
 <br /><br />
 <div class="weather-places__container">
-  <ul>
-    <li *ngFor="let place of (weatherPlacesState | async).weatherPlaces">
-      {{ place }}
-    </li>
-  </ul>
-</div>
+  <table
+    class="mat-elevation-z8"
+    mat-table
+    [dataSource]="(weatherPlacesState | async).weatherPlaces"
+  >
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Place name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
 
-<div class="weather-data__container">
-  {{ weatherData | async | json }}
+    <ng-container matColumnDef="w_desc">
+      <th mat-header-cell *matHeaderCellDef>Weather description</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.weather[0].description }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="wind">
+      <th mat-header-cell *matHeaderCellDef>Wind speed</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.wind.speed }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="temp">
+      <th mat-header-cell *matHeaderCellDef>Temperature</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.main.temp }}
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </div>
