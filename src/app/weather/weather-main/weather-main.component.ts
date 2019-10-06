@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../weather.service';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
 import * as WeatherActions from '../store/weather.actions';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -28,33 +30,42 @@ export class WeatherMainComponent implements OnInit {
     });
     this.store.dispatch(new WeatherActions.ClearWeatherPlaces());
 
-    this.weatherService.getLocation().subscribe(coordinates => {
-      this.weatherData = this.weatherService
-        .getCitiesAround(coordinates.coords, 10)
-        .subscribe(cities => {
-          this.store.dispatch(
-            new WeatherActions.AddMultipleWeatherPlaces(cities)
-          );
-        });
-    });
+    this.weatherService
+      .getLocation()
+      .pipe(
+        flatMap(coords => {
+          return this.weatherService.getCitiesAround(coords.coords, 10);
+        })
+      )
+      .subscribe(cities => {
+        this.store.dispatch(
+          new WeatherActions.AddMultipleWeatherPlaces(cities)
+        );
+      });
+
     this.weatherPlacesState = this.store.select('weatherPlaces');
   }
 
   setLocation(data) {
-    this.weatherService.getDataByCityName(data.loc).subscribe(cityData => {
-      console.log(cityData);
-      const coords = {
-        latitude: cityData.coord.lat,
-        longitude: cityData.coord.lon
-      };
-      this.weatherData = this.weatherService
-        .getCitiesAround(coords, 10)
-        .subscribe(cities => {
-          this.store.dispatch(
-            new WeatherActions.AddMultipleWeatherPlaces(cities)
-          );
-        });
-    });
+    this.weatherService
+      .getDataByCityName(data.loc)
+      .pipe(
+        flatMap(cityData => {
+          const coords = {
+            latitude: cityData.coord.lat,
+            longitude: cityData.coord.lon
+          };
+          return (this.weatherData = this.weatherService.getCitiesAround(
+            coords,
+            10
+          ));
+        })
+      )
+      .subscribe(cities => {
+        this.store.dispatch(
+          new WeatherActions.AddMultipleWeatherPlaces(cities)
+        );
+      });
   }
 
   addTown(name: string) {
